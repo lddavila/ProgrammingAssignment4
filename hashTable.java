@@ -2,7 +2,7 @@
 /** This class is meant to create a database for Person by using a hashTable
  *
  */
-public class PersonDatabase {
+public class hashTable {
     private int size;
     private Person [][] table;
     private long highestID;
