@@ -1,26 +1,50 @@
-/** extension of the Account Class, with additional attributes
- *
- */
+//Nicole Avila
+// CS3331
+// 1/29/21
+// Dr. Mejia
+// PA2
+// Checking account
+//I confirm that the work of this assignment is completely my own. By turning in this assignment, I declare that I did not receive unauthorized assistance. Moreover, all deliverables including, but not limited to the source code, lab report and output files were written and produced by me alone.I confirm that the work of this assignment is completely my own. By turning in this assignment, I declare that I did not receive unauthorized assistance. Moreover, all deliverables including, but not limited to the source code, lab report and output files were written and produced by me alone.
 public class Checking extends Account{
+    /***
+     * The constructor for the checking
+     * @param accountNum the account number
+     * @param balance the money in the account
+     */
+    public Checking(int accountNum, double balance) {
+        accountNum = super.accountNumber;
+        balance = super.balance;
+    }
 
-    /**default constructor
+    /***
+     * A general constructor
      */
     public Checking(){}
 
-    /**Constructor which takes a String array and takes info from it according to array position
-     * @param bankAccountData
-     * Assumes that I would always have perfectly formatted data
+    /***
+     * Adds amounts to the balance
+     * @param ammount the ammount to be added
      */
-    public Checking(String[] bankAccountData) {
-        this.set_First_Name(bankAccountData[0]);
-        this.set_Last_Name(bankAccountData[1]);
-        //converts the string into the expected long
-        this.set_Account_Number(Long.parseLong(bankAccountData[9]));
-        //converts string into expected boolean
+    public void add(double ammount){
+        balance+=ammount;
+    }
 
-        //converts string into expected double
-        this.set_Starting_Balance(Double.parseDouble(bankAccountData[12]));
+    /***
+     * Subtracts amounts from balance
+     * @param ammount the ammount to be subtracted
+     */
+    public void subtract(double ammount){
+        if (-ammount <= balance) {
+            balance -= ammount;
+        }
+        else{
+            System.out.println("Sorry insufficent funds");
+        }
     }
 
 
+
+
 }
+
+
