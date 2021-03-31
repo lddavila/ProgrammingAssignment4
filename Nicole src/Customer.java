@@ -28,6 +28,8 @@ public class Customer extends Person{
         lastName = bankAccountData[dataPositions[2]];
         DateOfBirth = bankAccountData[dataPositions[3]];
         IDNum = Long.parseLong(bankAccountData[dataPositions[1]]);
+        address = bankAccountData[dataPositions[11]] + bankAccountData[dataPositions[12]] + bankAccountData[dataPositions[13]].replaceAll("^\"|\"$", "");
+        phoneNumber = bankAccountData[dataPositions[6]];
     }
 
 
@@ -40,24 +42,23 @@ public class Customer extends Person{
     /***
      * Creates the checking saving and credit accounts object
      */
-    public void createClass(){
+    public void createClass(String []bankAccountData, int[] dataPositions){
         
         tempCustomer.setCreditMax();
         tempCustomer.setCheck(createChecking(bankAccountData,dataPositions));
         tempCustomer.setSave(createSavings(bankAccountData,dataPositions));
         tempCustomer.setCred(createCredit(bankAccountData,dataPositions));
-        tempCustomer.setAddress(bankAccountData[dataPositions[11]] + bankAccountData[dataPositions[12]] + bankAccountData[dataPositions[13]].replaceAll("^\"|\"$", ""));
-        tempCustomer.setPhoneNumber(bankAccountData[dataPositions[6]]);
+       
         
         
-        CheckingAcc.setAccountNumber(CheckingAN);
-        CheckingAcc.setBalance(CheckingABalance);
+        CheckingAcc.setAccountNumber(Long.parseLong(bankAccountData[dataPositions[4]]);
+        CheckingAcc.setBalance(Double.parseDouble(bankAccountData[dataPositions[7]);
 
-        SavingAcc.setAccountNumber(SavingAN);
-        SavingAcc.setBalance(SavingABalance);
+        SavingAcc.setAccountNumber(Long.parseLong(bankAccountData[dataPositions[0]]));
+        SavingAcc.setBalance(Double.parseDouble(bankAccountData[dataPositions[8]]));
 
-        CreditAcc.setAccountNumber(CreditAN);
-        CreditAcc.setBalance(CreditABalance);
+        CreditAcc.setAccountNumber(Long.parseLong(bankAccountData[dataPositions[5]]));
+        CreditAcc.setBalance(Double.parseDouble(bankAccountData[dataPositions[10]]));
         CreditAcc.setMax(Double.parseDouble(bankAccountData[dataPositions[9]]));
 
         LinkedList<String> transactions =new LinkedList<>();
