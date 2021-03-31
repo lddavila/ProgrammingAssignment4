@@ -51,9 +51,7 @@ public class readFile {
 
 
         int [] columnPosition = new int[columnInfo.length+2];
-        for(int i = 0; i < columnPosition.length;i++){
-            columnPosition[i] = -111111;
-        }
+
 
 
         for (int i = 0; i < columnInfo.length; i++ ){
@@ -182,70 +180,7 @@ public class readFile {
         tempCustomer.setPhoneNumber(bankAccountData[dataPositions[6]]);
         return tempCustomer;
     }
-    /**Creates a database of Accounts
-     * @return a hashTable filled with Account class
-*/
-    public static hashTable createAccountDatabase(){
-        //counter is going to be used so we know how big to make the hash table
-        int counter = 0;
-        //meant to store the different accounts after they're created
-        ArrayList<Account> listOfAccounts = new ArrayList<Account>();
-
-        try {
-            //Find the file
-            //need to fix this so that it only accepts the file name
-            File givenFile = new File("src/CS 3331 - Bank Users.csv");
-            Scanner reader = new Scanner(givenFile);
-            //retrieves the info from the file
-            String [] columnOrder = reader.nextLine().split(","); //Gets the first line
-
-            //The below line of code will create the first line of the new user log, we need to do this to properly format the info late
-
-            //each position of columnPositions contains an int that represents what column each piece of info is located in
-            int [] columnPositions = findColumnPosition(columnOrder);
-
-
-
-            while (reader.hasNextLine()) {
-
-
-                //Takes the String and turns it to an array
-                String [] bankAccountData = reader.nextLine().split(",");
-                //Creates a temporary checking, savings, and credit object that we can add to the array list we created earlier
-                Checking tempCheck = createChecking(bankAccountData, columnPositions);
-                Savings tempSavings = createSavings(bankAccountData,columnPositions);
-                Credit tempCredit = createCredit(bankAccountData, columnPositions);
-                //Adds the temporay checking account to the array list to preserve it
-                listOfAccounts.add(tempCheck);
-                listOfAccounts.add(tempSavings);
-                listOfAccounts.add(tempCredit);
-                 //we update counter on each line of the file to keep track of the size we need the hash table to be
-                counter+=1;
-
-            }
-            reader.close();
-        }
-
-        catch (FileNotFoundException e){
-            System.out.println("Could not find file");
-        }
-
-        //creates the databases that the rest of the lab will read from
-        hashTable dataBase = new hashTable(counter);
-        //adds to the 2 databases from the array lists created earlier
-        for(int i = 0; i < listOfAccounts.size(); i++){
-            dataBase.add_Account(listOfAccounts.get(i));
-        }
-
-
-        //dataBase.print_Data_Base();
-
-        return dataBase;
-    }
-
-
-
-
+    
     /**Creates a database of Person
      * @return a hashTable filled with Person class
      */
