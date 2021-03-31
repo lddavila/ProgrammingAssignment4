@@ -20,11 +20,11 @@ public class Checking extends Account{
      * @return a Checking Account with the correct data
      */
     public Checking(String [] bankAccountData, int [] dataPositions){
-        super.set_First_Name(bankAccountData[dataPositions[14]]);
-        super.set_Last_Name(bankAccountData[dataPositions[2]]);
-        super.set_Starting_Balance(Double.parseDouble(bankAccountData[dataPositions[7]]));
-        super.set_Account_Number(Long.parseLong(bankAccountData[dataPositions[4]]));
-        super.getBankStatement().setStartingBalance(Double.parseDouble(bankAccountData[dataPositions[7]]));
+        super.this.set_First_Name(bankAccountData[dataPositions[14]]);
+        super.this.set_Last_Name(bankAccountData[dataPositions[2]]);
+        super.this.set_Starting_Balance(Double.parseDouble(bankAccountData[dataPositions[7]]));
+        super.this.set_Account_Number(Long.parseLong(bankAccountData[dataPositions[4]]));
+        super.this.getBankStatement().setStartingBalance(Double.parseDouble(bankAccountData[dataPositions[7]]));
     }
 
 }
