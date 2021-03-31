@@ -5,25 +5,6 @@ import java.util.*;
  * the user wants to undertake.
  */
 public class backEnd {
-    /**This method assumes that an account number and a hashTable full of Accounts have been provided and will use the
-     * account number to conduct a search in the hashTable and return an account corresponding with the account number
-     * @param accountNumberIn The user's account number.
-     * @param databaseIn The database that the user's account exists in, assuming it does exist
-     * @return An Account object
-     */
-    public static Account findAccount(Long accountNumberIn, hashTable databaseIn){
-        try {
-            int key = -1;
-            if(accountNumberIn < 2000) {key = (int) (accountNumberIn -1000);}
-            else if(accountNumberIn < 3000){key = (int) (accountNumberIn-1900);}
-            else{key = (int)(accountNumberIn-2800);}
-            return databaseIn.get_table()[key][0];
-        }
-        catch(Exception e){
-            return null;
-        }
-    }
-
     /**this method finds the account based off name
      * @param name the user's name
      * @param databaseIn the database of people
@@ -352,98 +333,6 @@ public class backEnd {
         return 0;
     }
 
-    //handles transfers between 2 individuals
-    /** handles transfers between 2 accounts
-     * @param checkingIn The account that wants to initiate the transfer
-     * @param dataBaseIn the database that the account they want to transfer into is located in
-     * Uses a while loop that will not terminate until action completed or until the user exits
-     * Assumes user is already logged in and that their account and the account they want to transfer to both exist in the same database
-     * Does not allow for chars, incomplete acocunt numbers, incorrect acount numbers,
-     * Does not allow negative transfers
-     * Does not allow to transfer funds into the same account
-     * @return int to indicate completion
-     */
-    public static int transfer(Account checkingIn, hashTable dataBaseIn){
-        boolean actionCompleted = false;
-        boolean amountUnderstood = false;
-        double amountToBeDeposited = 0.00;
-        double checkIfTheyHaveTheFunds = -2;
-
-        while (!actionCompleted ) {
-            try {
-                Scanner otherAccountInfo = new Scanner(System.in);
-                System.out.println("Please enter the account number that you would like to transfer your funds to. (Enter -1 to exit)");
-                long userInput = otherAccountInfo.nextLong();
-                if (userInput == -1){
-                    return 0;
-                }
-                Account otherUser = findAccount(userInput, dataBaseIn);
-                if (otherUser == null) {
-                    //null indicates account was not found and transfer cannot be performed
-                    System.out.println("Sorry there's no account with that account number. Please Try again or exit.");
-                    //continue goes to the next iteration of the loop and lets the user try again or exit
-                    continue;
-                }
-                if (otherUser.get_Account_Number() == checkingIn.get_Account_Number()){
-                    //user is not going to be allowed to transfer money form their own account into their own account
-                    System.out.println("Sorry you cannot transfer funds from this account into this account");
-                    writeUserActions.logUserAction(checkingIn.get_First_Name() + " " + checkingIn.get_Last_Name() + " tried to transfer funds from account: " + checkingIn.get_Account_Number() + "to account: " + otherUser.get_Account_Number());
-                    continue;
-                }
-                //resets the scanner
-                otherAccountInfo.nextLine();
-                while(amountUnderstood == false) {
-                    try {
-                        //gets the amount the user wants to transfer
-                        System.out.println("Please enter the amount you would like to transfer to " + otherUser.get_First_Name() + " " + otherUser.get_Last_Name() + " Enter -1 to cancel");
-                        amountToBeDeposited = otherAccountInfo.nextDouble();
-                        //line below lets user cancel transaction
-                        if (amountToBeDeposited == -1){
-                            return 0;
-                        }
-                        //resets the  scanner
-                        otherAccountInfo.nextLine();
-                        //uses the previously created withdrawal method to avoid rewrites :)
-                        checkIfTheyHaveTheFunds = checkingIn.withdrawal(amountToBeDeposited);
-                        //the below if statement is meant to catch if the account holder trying to transfer funds even has enough money
-                        //if they don't then it breaks the loop and allows them to either try again or exit
-                        if (checkIfTheyHaveTheFunds ==-1){
-                            continue;
-                        }
-                        amountUnderstood = true;
-                    }
-                    catch (Exception e){
-                        otherAccountInfo.nextLine();
-                        invalidCommand(checkingIn);
-                        continue;
-                    }
-                }
-
-                System.out.println(amountToBeDeposited+" has been successfully withdrawn from account number: "+checkingIn.get_Account_Number()+" belonging to " + checkingIn.get_First_Name()+ " "+checkingIn.get_Last_Name());
-                //writes to file
-                writeUserActions.logUserAction(amountToBeDeposited+" has been successfully withdrawn from account number: "+checkingIn.get_Account_Number()+" belonging to " + checkingIn.get_First_Name()+ " "+checkingIn.get_Last_Name());
-
-                System.out.println(amountToBeDeposited+" has been successfully deposited into account number: "+otherUser.get_Account_Number()+" belonging to " + otherUser.get_First_Name()+" " + otherUser.get_Last_Name());
-                //writes to file
-                writeUserActions.logUserAction(amountToBeDeposited+" has been successfully deposited into account number: "+otherUser.get_Account_Number()+" belonging to " + otherUser.get_First_Name()+" " + otherUser.get_Last_Name());
-                //uses the previously created deposit method to avoid rewrites :)
-                otherUser.deposit(amountToBeDeposited);
-                actionCompleted = true;
-            }
-            catch(Exception e){
-                System.out.println("Sorry I didn't understand that. Please try again or exit.");
-                invalidCommand(checkingIn);
-                continue;
-            }
-            return 0;
-        }
-        return 0;
-
-
-
-
-    }
-
     /** Writes an error to a file by calling upon writeUserActions.logUserActions()
      * @param accountIn The account that entered the invalid command
      * Uses account holder's account to get info like first name, last name, and account type
@@ -451,13 +340,6 @@ public class backEnd {
     //handles invalid commands
     public static void invalidCommand(Person accountIn){
         writeUserActions.logUserAction("User: " + accountIn.getFirstName() + " " + accountIn.getLastName() +" entered an invalid command.");
-    }
-
-    /**Invalid command for when you have an bank account and not a Person
-     * @param accountIn the account of the user
-     */
-    public static void invalidCommand(Account accountIn){
-        writeUserActions.logUserAction("User: " + accountIn.get_First_Name() + " " + accountIn.get_Last_Name() +" entered an invalid command.");
     }
 
     //handles no account found
@@ -480,97 +362,10 @@ public class backEnd {
 
     }
 
-    /**Writes user exit to the action log
-     * @param user the account of the user
-     */
-    public static void userExit(Account user){
-        writeUserActions.logUserAction("User : " + user.get_First_Name() + " "+ user.get_Last_Name() + " has exited.");
-
-    }
-
-    //handles the action the user wants to take
-
-    /** calls other methods to direct the user actions
-     * @param actionIn an int indicating what the user wants to do
-     * @param checkingIn the account of the user
-     * @param dataBaseIn the database that the user's account exists in
-     * @return int to indicate whether the user wants to exit or reuturn to the main menu
-     * Uses switch case to decide which method to call based on the user input
-     * will use the user's accounts and the databse to run amm methods
-     * */
-
-    public static int userAction(int actionIn, Account checkingIn, hashTable dataBaseIn){
-        //checks to see what action has to be taken, and what code needs to be called as a result
-        switch(actionIn){
-            //handles deposits
-            case 1:
-                return deposit(checkingIn);
-            //returns 0 after action completed to return them to main menu
-            //handles withdrawals
-            case 2:
-                return withdrawal(checkingIn);
-            //returns 0 after action completed to return them to main menu
-            //handles transfers
-            case 3:
-                return transfer(checkingIn, dataBaseIn);
-            //returns 0 after action completed to return them to main menu
-            case 4:
-                //handles checking account balance
-                System.out.print("Your current balance is: $");
-                double amountInAccount= checkingIn.check_Balance();
-                writeUserActions.logUserAction(checkingIn.get_First_Name() + " " + checkingIn.get_Last_Name() + " checked their " + backEndForManager.checkIfCheckingSavingOrDebit(checkingIn) + " account balance. ");
-                //for this one I have to manually return a 0 so that they can go back to main menu
-                return 0;
-            //handles exiting the program
-            case 5:
-                userExit(checkingIn);
-                //returns a -1 because the userInterface will terminate if it is returned a negative 1 all other values will just return to main menu
-
-                return -1;
-
-
-        }
-        invalidCommand(checkingIn);
-        return 0;
-    }
+ 
 
 
 
-    //the below function will be used if the account is a credit account
-    //need a separate one because credit accounts have less functionality as you cannot withdraw or transfer from it
-
-    /** specific actions for credit accounts
-     *
-     * @param actionIn int indicating what the user wants to do
-     * @param checkingIn the user's account
-     * @param dataBaseIn the database that the user's account is located in
-     * @return int to indicate whether the user wants to exit or return to main menu
-     * uses same methods and logic as userAction(int actionIn, Account checkingIn, hashTable dataBaseIn)
-
-     */
-
-    public static int creditAccountActions(int actionIn, Account checkingIn, hashTable dataBaseIn){
-        switch (actionIn){
-            case 1:
-                return deposit(checkingIn);
-            //returns 0 after action completed to return them to main menu
-            //handles withdrawals
-            case 2:
-                //handles checking account balance
-                double amountInAccount= checkingIn.check_Balance();
-                writeUserActions.logUserAction(checkingIn.get_First_Name() + " "+  checkingIn.get_Last_Name() + " checked their Credit Account Balance, it was $" + amountInAccount);
-                return 0;
-
-            case 3:
-                //handles exit
-                userExit(checkingIn);
-                return -1;
-            default:
-                System.out.println("Sorry I don't understand that command, please try again.");
-                writeUserActions.logUserAction("User " + checkingIn.get_First_Name() + " " + checkingIn.get_Last_Name() + " entered an invalid action.");
-        }
-        return 0;
-    }
 
 
     /**Prints the appropriate secondary menu and calls the appropriate method
