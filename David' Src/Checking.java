@@ -14,5 +14,17 @@ public class Checking extends Account{
     public Checking(String[] bankAccountData) {
     }
 
+        /**Creates a Checking account with the appropriate info given by dataPositions
+     * @param bankAccountData an array of strings which contains all the info in the file line
+     * @param dataPositions an array of ints that contains the column positions
+     * @return a Checking Account with the correct data
+     */
+    public Checking(String [] bankAccountData, int [] dataPositions){
+        super.set_First_Name(bankAccountData[dataPositions[14]]);
+        super.set_Last_Name(bankAccountData[dataPositions[2]]);
+        super.set_Starting_Balance(Double.parseDouble(bankAccountData[dataPositions[7]]));
+        super.set_Account_Number(Long.parseLong(bankAccountData[dataPositions[4]]));
+        super.getBankStatement().setStartingBalance(Double.parseDouble(bankAccountData[dataPositions[7]]));
+    }
 
 }
