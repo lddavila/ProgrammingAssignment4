@@ -206,8 +206,10 @@ public class readFile {
 
                 //Takes the String and turns it to an array to take advantage of a constructor in the Checkings class which accepts an array
                 String [] bankAccountData = reader.nextLine().split(",");
+                //creates a temp saving, checking, and credit account 
+                
                 //creates a temp customer to add to database
-                Customer tempCust = createCustomer(bankAccountData, columnPositions);
+                Customer tempCust = new Customer(columnOrder, columnPositions); 
                 //adds temporary customer to array list to preserve it
                 listOfCustomers.add(tempCust);
                 //we update counter on each line of the file to keep track of the size we need the hash table to be
