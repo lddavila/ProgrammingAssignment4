@@ -19,6 +19,16 @@ public class Customer extends Person{
     Saving SavingAcc = new Saving();
     Credit CreditAcc = new Credit();
     BankStatement stat =new BankStatement();
+    
+    
+    
+    public Customer(String []bankAccountData, int[] dataPositions){
+        super(firstName, lastName, DateOfBirth, IDNum)
+        firstName = bankAccountData[dataPositions[14]];
+        lastName = bankAccountData[dataPositions[2]];
+        DateOfBirth = bankAccountData[dataPositions[3]];
+        IDNum = Long.parseLong(bankAccountData[dataPositions[1]]);
+    }
 
 
  
@@ -31,6 +41,15 @@ public class Customer extends Person{
      * Creates the checking saving and credit accounts object
      */
     public void createClass(){
+        
+        tempCustomer.setCreditMax();
+        tempCustomer.setCheck(createChecking(bankAccountData,dataPositions));
+        tempCustomer.setSave(createSavings(bankAccountData,dataPositions));
+        tempCustomer.setCred(createCredit(bankAccountData,dataPositions));
+        tempCustomer.setAddress(bankAccountData[dataPositions[11]] + bankAccountData[dataPositions[12]] + bankAccountData[dataPositions[13]].replaceAll("^\"|\"$", ""));
+        tempCustomer.setPhoneNumber(bankAccountData[dataPositions[6]]);
+        
+        
         CheckingAcc.setAccountNumber(CheckingAN);
         CheckingAcc.setBalance(CheckingABalance);
 
@@ -39,7 +58,7 @@ public class Customer extends Person{
 
         CreditAcc.setAccountNumber(CreditAN);
         CreditAcc.setBalance(CreditABalance);
-        CreditAcc.setMax(creditMax);
+        CreditAcc.setMax(Double.parseDouble(bankAccountData[dataPositions[9]]));
 
         LinkedList<String> transactions =new LinkedList<>();
         stat = new BankStatement(super.firstName,super.lastname,super.DOB,super.address,super.phoneNumber
