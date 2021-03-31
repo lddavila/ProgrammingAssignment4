@@ -6,12 +6,12 @@
 // Abstract person class
 //I confirm that the work of this assignment is completely my own. By turning in this assignment, I declare that I did not receive unauthorized assistance. Moreover, all deliverables including, but not limited to the source code, lab report and output files were written and produced by me alone.I confirm that the work of this assignment is completely my own. By turning in this assignment, I declare that I did not receive unauthorized assistance. Moreover, all deliverables including, but not limited to the source code, lab report and output files were written and produced by me alone.
     public abstract class Person {
-        public String firstName;
-        public String lastname;
-        public String DOB;
-        public String address;
-        public String phoneNumber;
-        public String idNumber;
+        private String firstName;
+        private String lastname;
+        private String DOB;
+        private String address;
+        private String phoneNumber;
+        private String idNumber;
 
         /***
          *
@@ -71,7 +71,7 @@
         }
 
         /***
-         * getter fro last name
+         * getter for last name
          * @return last name
          */
         public String getLastname() {
