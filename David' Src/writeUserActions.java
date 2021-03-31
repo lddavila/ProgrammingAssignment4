@@ -38,14 +38,11 @@ public class writeUserActions {
     public static void logUserAction(String userAction) {
 
         try {
-            //If you don't put true then you'll keep overwriting, learned this the hard way over the course of an hour
-            FileWriter logger = new FileWriter("userActions.txt", true);
-
-            logger.write(userAction + "\n");
-            // \n puts each new written line on its own line
-
-            logger.close();
-        } catch (Exception e) {
+            FileWriter out = new FileWriter("userActions.txt", true);
+            out.write(userAction + "\n");
+            out.close();
+        } 
+        catch (Exception e) {
             System.out.println("Error");
         }
 
