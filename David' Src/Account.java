@@ -20,41 +20,19 @@ public abstract class Account {
      */
     public Account(){
     }
-
-    /**Useful constructor that will build the class
-     * @param bankAccountData
-     * Takes the array and uses it to assign appropriate place in array to the correct attribute
-     * Assumes that info will be perfectly formatted with nothing missing
-     *
-     */
-    public Account(String[] bankAccountData) {
-        this.firstName = bankAccountData[0];
-        this.lastName = bankAccountData[1];
-        //converts the string into the expected long
-        this.accountNumber = Long.parseLong(bankAccountData[2]);
-        //converts string into expected double
-        this.startingBalance = Double.parseDouble(bankAccountData[5]);
-        //converts string into expected double, also removes the percent that is in the file
-
-    }
-
-
-
-
-
     //////////////////SETTERS//////////////////////////
-
     /**sets the first name
      * @param name_In the first name of the user in the account
      */
     public void set_First_Name(String name_In){
         this.firstName = name_In;
     }
-
+    
     /** sets the last name
      *
      * @param last_Name_In the last name of the user in the account
      */
+    
     public void set_Last_Name(String last_Name_In){
         this.lastName = last_Name_In;
     }
@@ -73,10 +51,7 @@ public abstract class Account {
     public void set_Starting_Balance(double in_Starting_Balance){
         this.startingBalance = in_Starting_Balance;
     }
-
-
-
-
+    
     ////////////////GETTERS///////////////////////
 
     /** returns the first name
@@ -129,7 +104,6 @@ public abstract class Account {
      * @return a double that has the account balance
      */
     public double check_Balance(){
-
         System.out.println("Your Current Balance Is: " +this.startingBalance);
         this.bankStatement.addUserTransaction("You checked your account balance on " + java.time.LocalDate.now());
         writeUserActions.logUserAction(this.firstName + " "+ this.lastName + " checked their account balances.");
@@ -164,36 +138,7 @@ public abstract class Account {
         this.bankStatement.setEndingBalance(this.startingBalance);
         return 0;
     }
-
-    /**will reduce account balance
-     *
-     * @param withdrawalAmount the amount that the user wants to withdraw
-     * @param  noMessage an insignificant int that serves only to make this method distinct
-     * @return a double to indicate faliure/success
-     * Updates balance
-     * Does not Print error message
-     */
-    public double withdrawal(double withdrawalAmount, int noMessage){
-        if (withdrawalAmount < 0){
-            //returns a -1 so that backEnd knows there was an error and can alert the user of this so they can try again or exit as appropriate
-            this.bankStatement.addUserTransaction("You tried to withdraw a negative amount on " + String.valueOf(java.time.LocalDate.now()));
-            writeUserActions.logUserAction(this.firstName + " "+ this.lastName + " failed to withdraw from their "+ backEndForTransactionReader.checkAccountType(this.accountNumber) + " account because they entered a negative amount.");
-            return -1;
-        }
-        if (this.startingBalance - withdrawalAmount < 0){
-            writeUserActions.logUserAction(this.firstName + " "+ this.lastName + " failed to withdraw from their "+ backEndForTransactionReader.checkAccountType(this.accountNumber) + " account because of insufficient funds");
-            //returns a -1 so that backEnd knows there was an error and can alert the user of this so they can try again or exit as appropriate
-            this.bankStatement.addUserTransaction("You tried to withdraw more funds than you had on " + String.valueOf(java.time.LocalDate.now()));
-            return -1;
-        }
-        this.startingBalance = this.startingBalance- withdrawalAmount;
-        this.bankStatement.addUserTransaction("You withdrew $"+ withdrawalAmount + " on " + String.valueOf(java.time.LocalDate.now()));
-        writeUserActions.logUserAction(this.firstName + " "+ this.lastName + " withdrew $" + withdrawalAmount + " from their "+ backEndForTransactionReader.checkAccountType(this.accountNumber) + " account.");
-        this.bankStatement.setEndingBalance(this.startingBalance);
-        //returns a 0 to indicate that there was a successful transaction and allow the user to get the confirmation message and return to main menu
-        return 0;
-    }
-
+    
     /** will allow the user to deposit funds into their acocunt
      * @param depositAmount amount the user wants to deposit
      * @return
@@ -217,25 +162,4 @@ public abstract class Account {
         //returns a 0 to indicate that there was a successful transaction and allow the user to get the confirmation message and return to main menu
         return 0;
     }
-
-    /**this is made specifically so that double messages aren't printed to the console
-     * @param depositAmount the amount that will be deposited
-     * @param noMessage an insignificant int that serves only to make this method distinct
-     * @return will return a -1 to indicate failiure or a 0 to indicate success
-     */
-    public double deposit(double depositAmount, int noMessage){
-        if (depositAmount < 0){
-            //returns a -1 so that backEnd knows there was an error and can alert the user of this so they can try again or exit as appropriate
-            this.bankStatement.addUserTransaction("You tried to deposit a negative amount on " + java.time.LocalDate.now());
-            writeUserActions.logUserAction(this.firstName + " "+ this.lastName + " failed to deposit into their "+ backEndForTransactionReader.checkAccountType(this.accountNumber) + " account because they entered a negative amount.");
-            return -1;
-        }
-        this.startingBalance = this.startingBalance + depositAmount;
-        this.bankStatement.addUserTransaction("You deposited $"+ depositAmount + " on " + String.valueOf(java.time.LocalDate.now()));
-        writeUserActions.logUserAction(this.firstName + " "+ this.lastName + " deposited $" + depositAmount+ " into their "+ backEndForTransactionReader.checkAccountType(this.accountNumber) + " account.");
-        this.bankStatement.setEndingBalance(this.startingBalance);
-        //returns a 0 to indicate that there was a successful transaction and allow the user to get the confirmation message and return to main menu
-        return 0;
-    }
-
 }
