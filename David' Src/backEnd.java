@@ -1,10 +1,29 @@
-
+import java.io.IOException;
 import java.util.*;
 /**
  *This Class is meant to handle the "heavy lifting" of the PA and call the appropriate functions depending on what action
  * the user wants to undertake.
  */
 public class backEnd {
+    /**This method assumes that an account number and a hashTable full of Accounts have been provided and will use the
+     * account number to conduct a search in the hashTable and return an account corresponding with the account number
+     * @param accountNumberIn The user's account number.
+     * @param databaseIn The database that the user's account exists in, assuming it does exist
+     * @return An Account object
+     */
+    public static Account findAccount(Long accountNumberIn, hashTable databaseIn){
+        try {
+            int key = -1;
+            if(accountNumberIn < 2000) {key = (int) (accountNumberIn -1000);}
+            else if(accountNumberIn < 3000){key = (int) (accountNumberIn-1900);}
+            else{key = (int)(accountNumberIn-2800);}
+            return databaseIn.get_table()[key][0];
+        }
+        catch(Exception e){
+            return null;
+        }
+    }
+
     /**this method finds the account based off name
      * @param name the user's name
      * @param databaseIn the database of people
@@ -32,54 +51,63 @@ public class backEnd {
 
 
 
-    /**deposit(Account checkingIn) will allow the user to deposit funds into their account
-     * assumes that the user is already logged in and an Account type object can be passed to it
-     * Uses a while loop that only terminates if the user exits or succeeds to allow the user to retry input
-     * does not allow negative amounts, chars, or strings
-     * @param checkingIn the user's Account
-     * @return  int will indicate that the user has completed what they were trying to do. Either by exiting for successfully depositing.
-     */
-    //handles deposits
-    public static int deposit(Account checkingIn){
+    public static void deposit(String dep, Person person, double dammount){
+        switch (dep) {
+            case "1":
+                person.getCheck().deposit(dammount);
+                System.out.println(person.getFirstName() +" deposited $"+ dammount +" into checking new balance is $" +person.getCheck().get_Starting_Balance());
 
-        //creates a scanner to handle user input that will be used throughout this method
-        Scanner userInput = new Scanner(System.in);
-        //this boolean will be used to control the while loop and will remain false until the action has been completed or cancelled
-        //once it becomes true the while loop will terminate and the user will return to main menu
-        boolean actionCompleted = false;
-        //will continue to allow the user to try and enter an amount until they either complete their transaction
-        //or else choose to exit back to main menu
-        while(!actionCompleted) {
-            System.out.println("How much would you like to deposit today? (Enter -1 to exit back to main menu)");
-            try {
-                //if the user chooses to exist by putting in -1 they return to the main menu where they can enter a new action
-                double exit = userInput.nextDouble();
-                if (exit == -1){
-                    return 0;
+
+                try {//writes transaction to log
+                    //FileWriter out = new FileWriter("transLog.txt", false);
+                    writeUserActions.logUserAction(person.getFirstName() +" deposited $"+ dammount +" into checking new balance is $" +person.getCheck().get_Starting_Balance());
+                    writeUserActions.logUserAction("\r\n");
+
                 }
-                //calls the checking account's deposit function and updates
-                double newBalance = checkingIn.deposit(exit);
-                //if they try to input a negative number it'll give them an appropriate message and restart the loop as to
-                //give them another try
-                if(newBalance == -1){continue; }
+                catch(Exception e){
+                    System.out.println("Error in translog");
+                }
+                break;
+            case "2":
+                person.getSave().deposit(dammount);
+                System.out.println(person.getFirstName() +" deposited $"+ dammount +" into saving new balance is $" +person.getSave().get_Starting_Balance());
 
-                //line below calls the a method in writeuseractions which will print an appropriate message of success and log the action
-                writeUserActions.printSuccessMessages(checkingIn, "deposited", exit);
 
-                //breaks loop now that the action has been successfully completed
-                actionCompleted = true;
-            } catch (Exception e) {
-                //prints an error message for the benefit of the user
-                System.out.println("Sorry I didn't understand that. Please enter a dollar amount or exit.");
-                //logs an invalid command
-                invalidCommand(checkingIn);
-                //updates scanner so that it can be used again
-                userInput.nextLine();
-                //breaks the while loop and returns the user to the begining of the deposit menu
-                continue;
-            }
+                try {//writes transaction to log
+                    //FileWriter out = new FileWriter("transLog.txt", false);
+                    writeUserActions.logUserAction(person.getFirstName() +" deposited $"+ dammount +" into saving new balance is $" +person.getSave().get_Starting_Balance());
+                    writeUserActions.logUserAction("\r\n");
+
+                }
+                catch(Exception e){
+                    System.out.println("Error in translog");
+                }
+                break;
+            case "3":
+                if(-dammount >= person.getCred().get_Starting_Balance() ) {
+
+                    person.getCred().deposit(dammount);
+                    System.out.println(person.getFirstName()+ " deposited $" + dammount + " into credit new balance is $" + person.getCred().get_Starting_Balance());
+
+
+                    try {//writes transaction to log
+                        //FileWriter out = new FileWriter("transLog.txt", false);
+                        writeUserActions.logUserAction(person.getFirstName() +" deposited $"+ dammount +" into credit new balance is $" +person.getCred().get_Starting_Balance());
+                        writeUserActions.logUserAction("\r\n");
+
+                    }
+                    catch(Exception e){
+                        System.out.println("Error in translog");
+                    }
+                }
+                else{
+                    System.out.println("Amount is too large to deposit in credit ");
+                }
+                break;
+            default:
+                System.out.println("Sorry that isnt an option");
+                break;
         }
-        return 0;
     }
 
     //handles withdrawals uses the exact same logic as deposit(), but just changes the method you call
@@ -124,6 +152,13 @@ public class backEnd {
             }
         }
         return 0;
+    }
+
+    /**Invalid command for when you have an bank account and not a Person
+     * @param accountIn the account of the user
+     */
+    public static void invalidCommand(Account accountIn){
+        writeUserActions.logUserAction("User: " + accountIn.get_First_Name() + " " + accountIn.get_Last_Name() +" entered an invalid command.");
     }
 
     /**Handles transfers between 2 individuals in the case where we only have a people database
@@ -333,6 +368,8 @@ public class backEnd {
         return 0;
     }
 
+
+
     /** Writes an error to a file by calling upon writeUserActions.logUserActions()
      * @param accountIn The account that entered the invalid command
      * Uses account holder's account to get info like first name, last name, and account type
@@ -341,6 +378,8 @@ public class backEnd {
     public static void invalidCommand(Person accountIn){
         writeUserActions.logUserAction("User: " + accountIn.getFirstName() + " " + accountIn.getLastName() +" entered an invalid command.");
     }
+
+
 
     //handles no account found
 
@@ -362,9 +401,16 @@ public class backEnd {
 
     }
 
- 
 
 
+    //handles the action the user wants to take
+
+
+
+
+
+    //the below function will be used if the account is a credit account
+    //need a separate one because credit accounts have less functionality as you cannot withdraw or transfer from it
 
 
 
@@ -376,8 +422,9 @@ public class backEnd {
      */
     public static int secondaryMenu(Person user, int actionIn, PersonDatabase people) {
         Scanner userInput = new Scanner(System.in);
-        int accountAction  = -10000;
-        while (accountAction != -1) {
+        String accountAction  = "-10000";
+        double amount = 0;
+        while (!accountAction.equals("-1")){
             try {
 
                 switch (actionIn) {
@@ -387,30 +434,20 @@ public class backEnd {
                         System.out.println("1.) Checking");
                         System.out.println("2.) Savings");
                         System.out.println("3.) Credit");
-                        accountAction = userInput.nextInt();
-
-                        switch (accountAction) {
-                            case 1:
-                                if(user.getCheck() == null){
-                                    System.out.println("Sorry it looks like you don't have a checking account.");
-                                    return 0;
-                                }
-                                return deposit(user.getCheck());
-                            case 2:
-                                return deposit(user.getSave());
-                            case 3:
-                                if(user.getCred() == null){
-                                    System.out.println("Sorry it looks like you don't have a credit account.");
-                                    return 0;
-                                }
-                                return deposit(user.getCred());
-                            case -1:
+                        accountAction = userInput.nextLine();
+                        System.out.println("How much would you like to deposit?");
+                        amount = userInput.nextDouble();
+                        try{
+                            if(accountAction.equals("-1"))
                                 return 0;
-                            default:
-                                System.out.println("Sorry please enter a valid action or exit by entering -1.");
-                                continue;
+                            deposit(accountAction, user, amount);
+                            return 0;
                         }
-
+                        catch(Exception e) {
+                            System.out.println("Sorry you either entered an invalid amount or an invalid action, please try again.");
+                            writeUserActions.logUserAction(user.getFirstName() + user.getLastName() + "entered an invalid action/amount.");
+                            continue;
+                        }
 
                         //returns 0 after action completed to return them to main menu
                         //handles withdrawals
@@ -418,17 +455,17 @@ public class backEnd {
                         System.out.println("What Account would you like to withdraw from?");
                         System.out.println("1.) Checking");
                         System.out.println("2.) Savings");
-                        accountAction = userInput.nextInt();
+                        accountAction = userInput.nextLine();
                         switch (accountAction) {
-                            case 1:
+                            case "1":
                                 if(user.getCheck() == null){
                                     System.out.println("Sorry it looks like you don't have a checking account. Please select something else. ");
                                     return 0;
                                 }
                                 return withdrawal(user.getCheck());
-                            case 2:
+                            case "2":
                                 return withdrawal(user.getSave());
-                            case -1:
+                            case "-1":
                                 return 0;
                             default:
                                 System.out.println("Sorry please enter a valid action or exit by entering -1.");
@@ -441,17 +478,17 @@ public class backEnd {
                         System.out.println("1.) Checking");
                         System.out.println("2.) Savings");
 
-                        accountAction = userInput.nextInt();
+                        accountAction = userInput.nextLine();
                         switch (accountAction) {
-                            case 1:
+                            case "1":
                                 if(user.getCheck() == null){
                                     System.out.println("Sorry it looks like you don't have a checking account.");
                                     return 0;
                                 }
                                 return transfer(user.getCheck(), people);
-                            case 2:
+                            case "2":
                                 return transfer(user.getSave(), people);
-                            case -1:
+                            case "-1":
                                 return 0;
                             default:
                                 System.out.println("Sorry please enter a valid action or exit by entering -1.");
