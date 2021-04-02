@@ -1,3 +1,4 @@
+
 import java.io.IOException;
 import java.util.*;
 /**
@@ -400,20 +401,7 @@ public class backEnd {
         writeUserActions.logUserAction("User : " + user.getFirstName() + " "+ user.getLastName() + " has exited.");
 
     }
-
-
-
-    //handles the action the user wants to take
-
-
-
-
-
-    //the below function will be used if the account is a credit account
-    //need a separate one because credit accounts have less functionality as you cannot withdraw or transfer from it
-
-
-
+    
     /**Prints the appropriate secondary menu and calls the appropriate method
      * @param user the person who is currently trying to do things to their account
      * @param actionIn the action the person wants to take
@@ -430,29 +418,41 @@ public class backEnd {
                 switch (actionIn) {
                     //handles deposits
                     case 1:
-                        System.out.println("What Account would you like to deposit into?");
+                        System.out.println("What Account would you like to deposit into? (Enter -1 to Exit)");
                         System.out.println("1.) Checking");
                         System.out.println("2.) Savings");
                         System.out.println("3.) Credit");
                         accountAction = userInput.nextLine();
-                        System.out.println("How much would you like to deposit?");
-                        amount = userInput.nextDouble();
-                        try{
-                            if(accountAction.equals("-1"))
+                        if (accountAction.equals("-1"))
+                            return 0;
+                        if(accountAction.equals("1") || accountAction.equals("2") || accountAction.equals("3")) {
+                            System.out.println("How much would you like to deposit? (Enter -1 to Exit)");
+                            amount = userInput.nextDouble();
+                            if (accountAction.equals("-1"))
                                 return 0;
-                            deposit(accountAction, user, amount);
+                            try {
+
+                                deposit(accountAction, user, amount);
+                                return 0;
+                            } catch (Exception e) {
+                                System.out.println("Sorry you either entered an invalid amount or an invalid action, please try again.");
+                                writeUserActions.logUserAction(user.getFirstName() + user.getLastName() + "entered an invalid action/amount.");
+                                continue;
+                            }
+                        }
+                        else if(accountAction.equals(-1)){
                             return 0;
                         }
-                        catch(Exception e) {
-                            System.out.println("Sorry you either entered an invalid amount or an invalid action, please try again.");
-                            writeUserActions.logUserAction(user.getFirstName() + user.getLastName() + "entered an invalid action/amount.");
+                        else{
+                            System.out.println("Sorry that's an invalid action. Please Try again");
+                            writeUserActions.logUserAction(user.getFirstName() + user.getLastName() + "entered an invalid action.");
                             continue;
                         }
 
                         //returns 0 after action completed to return them to main menu
                         //handles withdrawals
                     case 2:
-                        System.out.println("What Account would you like to withdraw from?");
+                        System.out.println("What Account would you like to withdraw from? (Enter -1 to Exit)");
                         System.out.println("1.) Checking");
                         System.out.println("2.) Savings");
                         accountAction = userInput.nextLine();
