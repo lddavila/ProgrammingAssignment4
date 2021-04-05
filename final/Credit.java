@@ -13,7 +13,17 @@ public class Credit extends Account{
      * @param bankAccountData
      * Assumes that I would always have perfectly formatted data
      */
-    public Credit(String[] bankAccountData) {    }
+    public Credit(String[] bankAccountData) {
+        this.set_First_Name(bankAccountData[0]);
+        this.set_Last_Name(bankAccountData[1]);
+        //converts the string into the expected long
+        this.set_Account_Number(Long.parseLong(bankAccountData[11]));
+        //converts string into expected boolean
+
+        //converts string into expected double
+        this.set_Starting_Balance(Double.parseDouble(bankAccountData[14]));
+
+    }
 
     /** This method is created to override the deposit function located in the Account class
      * @param depositAmount amount the user wants to deposit into their creidt account
