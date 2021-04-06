@@ -90,6 +90,24 @@ public class writeUserActions {
             String[] columnTitles = reader.nextLine().split(",");
 
             FileWriter logger = new FileWriter("Generated Updated Balance Sheet.csv", true);
+
+            logger.write(
+                    "Identification Number," +
+                    "First Name," +
+                    "Last Name," +
+                    "Phone Number," +
+                    "Email," +
+                     "Password," +
+                     "Address," +
+                    "Date of Birth," +
+                    "Credit Max," +
+                    "Checking Account Number," +
+                    "Checking Starting Balance," +
+                    "Savings Account Number," +
+                    "Savings Starting Balance," +
+                    "Credit Account Number," +
+                    "Credit Starting Balance, \n");
+            /*
             for (int i = 0; i < columnTitles.length; i++) {
                 if (i < columnTitles.length - 1) {
                     logger.write(columnTitles[i] + ",");
@@ -98,118 +116,31 @@ public class writeUserActions {
                 }
             }
             logger.write("\n");
+             */
 
 
             for (int i = 0; i < localA.length; i++) {
                 if (localA[i][0] != null) {
                     //The below for loop will format the customer's information into the .csv file that will be written
                     //in the end
-                    for (int x = 0; x < columnTitles.length; x++) {
-                        if (x == columnTitles.length - 1) {
-                            try {
-                                switch (columnTitles[x]) {
-
-                                    case "Savings Account Number":
-                                        logger.write(String.valueOf(localA[i][0].getSave().get_Account_Number()));
-                                        break;
-                                    case "Identification Number":
-                                        logger.write(String.valueOf(localA[i][0].getIDNum()));
-                                        break;
-                                    case "Last Name":
-                                        logger.write(String.valueOf(localA[i][0].getLastName()));
-                                        break;
-                                    case "Date of Birth":
-                                        //System.out.println(localA[i][0].getDateOfBirth());
-                                        logger.write(localA[i][0].getDateOfBirth());
-                                        break;
-                                    case "Checking Account Number":
-                                        logger.write(String.valueOf(localA[i][0].getCheck().get_Account_Number()));
-                                        break;
-                                    case "Credit Account Number":
-                                        logger.write(String.valueOf(localA[i][0].getCred().get_Account_Number()));
-                                        break;
-                                    case "Phone Number":
-                                        logger.write(localA[i][0].getPhoneNumber());
-                                        break;
-                                    case "Checking Starting Balance":
-                                        logger.write(String.valueOf(localA[i][0].getCheck().get_Starting_Balance()));
-                                        break;
-                                    case "Savings Starting Balance":
-                                        logger.write(String.valueOf(localA[i][0].getSave().get_Starting_Balance()));
-                                        break;
-                                    case "Credit Max":
-                                        logger.write(localA[i][0].getCreditMax() + ",");
-                                        break;
-                                    case "Credit Starting Balance":
-                                        logger.write(String.valueOf(localA[i][0].getCred().get_Starting_Balance()));
-                                        break;
-                                    case "Address":
-                                        logger.write(localA[i][0].getAddress());
-                                        //we do this here because the address actually takes up 3 columns cause of how
-                                        //it is formatted in the csv
-                                        break;
-                                    case "First Name":
-                                        logger.write(localA[i][0].getFirstName());
-                                        break;
-                                }
-                            } catch (Exception e) {
-                                logger.write("Unavailable");
-                            }
-                        } else {
-                            try {
-                                switch (columnTitles[x]) {
-
-                                    case "Savings Account Number":
-                                        logger.write(localA[i][0].getSave().get_Account_Number() + ",");
-                                        break;
-                                    case "Identification Number":
-                                        logger.write(localA[i][0].getIDNum() + ",");
-                                        break;
-                                    case "Last Name":
-                                        logger.write(localA[i][0].getLastName() + ",");
-                                        break;
-                                    case "Date of Birth":
-                                        //System.out.println(localA[i][0].getDateOfBirth());
-                                        logger.write(localA[i][0].getDateOfBirth() + ",");
-                                        break;
-                                    case "Checking Account Number":
-                                        logger.write(localA[i][0].getCheck().get_Account_Number() + ",");
-                                        break;
-                                    case "Credit Account Number":
-                                        logger.write(localA[i][0].getCred().get_Account_Number() + ",");
-                                        break;
-                                    case "Phone Number":
-                                        logger.write(localA[i][0].getPhoneNumber() + ",");
-                                        break;
-                                    case "Checking Starting Balance":
-                                        logger.write(localA[i][0].getCheck().get_Starting_Balance() + ",");
-                                        break;
-                                    case "Savings Starting Balance":
-                                        logger.write(localA[i][0].getSave().get_Starting_Balance() + ",");
-                                        break;
-                                    case "Credit Max":
-                                        logger.write(localA[i][0].getCreditMax() + ",");
-                                        break;
-                                    case "Credit Starting Balance":
-                                        logger.write(localA[i][0].getCred().get_Starting_Balance() + ",");
-                                        break;
-                                    case "Address":
-                                        logger.write(localA[i][0].getAddress() + ",");
-                                        //we do this here because the address actually takes up 3 columns cause of how
-                                        //it is formatted in the csv
-                                        break;
-                                    case "First Name":
-                                        logger.write(localA[i][0].getFirstName() + ",");
-                                        break;
-                                }
-                            } catch (Exception e) {
-                                logger.write("Unavailable,");
-                            }
-
-                        }
-
-                    }
-                    logger.write("\n");
+                    logger.write(String.valueOf(
+                            localA[i][0].getIDNum()+","+
+                            localA[i][0].getFirstName()+","+
+                            localA[i][0].getLastName())+","+
+                            localA[i][0].getPhoneNumber()+","+
+                            localA[i][0].getEmail()+","+
+                            localA[i][0].getPassword()+","+
+                            localA[i][0].getAddress()+","+
+                            localA[i][0].getDOB()+","+
+                            localA[i][0].getCreditMax()+","+
+                            localA[i][0].getCheck().get_Account_Number()+","+
+                            localA[i][0].getCheck().get_Starting_Balance()+","+
+                            localA[i][0].getSave().get_Account_Number()+","+
+                            localA[i][0].getSave().get_Starting_Balance()+","+
+                            localA[i][0].getCred().get_Account_Number()+","+
+                            localA[i][0].getCred().get_Starting_Balance()+","+
+                            "\n"
+                    );
                 } else {
                     break;
                 }
