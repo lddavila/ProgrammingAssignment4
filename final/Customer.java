@@ -25,16 +25,18 @@ public class Customer extends Person{
     public Customer(String []bankAccountData, int[] dataPositions){
 
 
-        this.setFirstName(bankAccountData[dataPositions[14]]);
+        this.setFirstName(bankAccountData[dataPositions[12]]);
         this.setLastname(bankAccountData[dataPositions[2]]);
-        this.setDOB(bankAccountData[dataPositions[3]]);
-        this.setAddress(bankAccountData[dataPositions[11]] + bankAccountData[dataPositions[12]] + bankAccountData[dataPositions[13]].replaceAll("^\"|\"$", ""));
-        this.setPhoneNumber(bankAccountData[dataPositions[6]]);
+        this.setDOB((bankAccountData[dataPositions[3]] + bankAccountData[dataPositions[4]]).replaceAll("\"", ""));
+        this.setAddress((bankAccountData[dataPositions[15]] + bankAccountData[dataPositions[16]] + bankAccountData[dataPositions[17]]).replaceAll("\"", ""));
+        this.setPhoneNumber(bankAccountData[dataPositions[7]]);
         this.setIdNumber((bankAccountData[dataPositions[1]]));
-        this.setCreditMax(Double.parseDouble(bankAccountData[dataPositions[9]]));
-        this.CreditABalance = Double.parseDouble(bankAccountData[dataPositions[10]]);
-        this.SavingABalance = Double.parseDouble(bankAccountData[dataPositions[8]]);
-        this.CheckingABalance = Double.parseDouble(bankAccountData[dataPositions[7]]);
+        this.setCreditMax(Double.parseDouble(bankAccountData[dataPositions[10]]));
+        this.CreditABalance = Double.parseDouble(bankAccountData[dataPositions[11]]);
+        this.SavingABalance = Double.parseDouble(bankAccountData[dataPositions[9]]);
+        this.CheckingABalance = Double.parseDouble(bankAccountData[dataPositions[8]]);
+        this.setPassword(bankAccountData[dataPositions[14]]);
+        this.setEmail(bankAccountData[dataPositions[13]]);
 
         createClass(bankAccountData, dataPositions);
     }
