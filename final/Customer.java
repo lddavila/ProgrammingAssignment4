@@ -7,7 +7,7 @@ import java.util.LinkedList;
 // PA3
 // Customer class
 //I confirm that the work of this assignment is completely my own. By turning in this assignment, I declare that I did not receive unauthorized assistance. Moreover, all deliverables including, but not limited to the source code, lab report and output files were written and produced by me alone.I confirm that the work of this assignment is completely my own. By turning in this assignment, I declare that I did not receive unauthorized assistance. Moreover, all deliverables including, but not limited to the source code, lab report and output files were written and produced by me alone.
-public class Customer extends Person{
+public class Customer extends Person {
     int CheckingAN;
     int SavingAN;
     int CreditAN;
@@ -18,27 +18,37 @@ public class Customer extends Person{
     Checking CheckingAcc = new Checking();
     Savings SavingAcc = new Savings();
     Credit CreditAcc = new Credit();
+    String password;
+    String Email;
 
 
 
 
-    public Customer(String []bankAccountData, int[] dataPositions){
+    public Customer(String []bankAccountData, int[] dataPositions) throws CreditException {
 
 
-        this.setFirstName(bankAccountData[dataPositions[12]]);
-        this.setLastname(bankAccountData[dataPositions[2]]);
-        this.setDOB((bankAccountData[dataPositions[3]] + bankAccountData[dataPositions[4]]).replaceAll("\"", ""));
-        this.setAddress((bankAccountData[dataPositions[15]] + bankAccountData[dataPositions[16]] + bankAccountData[dataPositions[17]]).replaceAll("\"", ""));
-        this.setPhoneNumber(bankAccountData[dataPositions[7]]);
-        this.setIdNumber((bankAccountData[dataPositions[1]]));
-        this.setCreditMax(Double.parseDouble(bankAccountData[dataPositions[10]]));
-        this.CreditABalance = Double.parseDouble(bankAccountData[dataPositions[11]]);
-        this.SavingABalance = Double.parseDouble(bankAccountData[dataPositions[9]]);
-        this.CheckingABalance = Double.parseDouble(bankAccountData[dataPositions[8]]);
-        this.setPassword(bankAccountData[dataPositions[14]]);
-        this.setEmail(bankAccountData[dataPositions[13]]);
 
-        createClass(bankAccountData, dataPositions);
+            this.setFirstName(bankAccountData[dataPositions[12]]);
+            this.setLastname(bankAccountData[dataPositions[2]]);
+            this.setDOB(bankAccountData[dataPositions[3]] + bankAccountData[dataPositions[4]]);
+            this.setAddress(bankAccountData[dataPositions[15]] + bankAccountData[dataPositions[16]] + bankAccountData[dataPositions[17]].replaceAll("^\"|\"$", ""));
+            this.setPhoneNumber(bankAccountData[dataPositions[7]]);
+            this.setIdNumber((bankAccountData[dataPositions[1]]));
+            this.setCreditMax(Double.parseDouble(bankAccountData[dataPositions[10]]));
+            this.CheckingABalance = Double.parseDouble(bankAccountData[dataPositions[8]]);
+            this.SavingABalance = Double.parseDouble(bankAccountData[dataPositions[9]]);
+            if(Double.parseDouble(bankAccountData[dataPositions[11]])> 0) {
+                throw new CreditException();
+            }
+
+            else {
+                this.CreditABalance = Double.parseDouble(bankAccountData[dataPositions[11]]);
+            }
+            this.password = bankAccountData[dataPositions[14]];
+            this.Email = bankAccountData[dataPositions[13]];
+
+            createClass(bankAccountData, dataPositions);
+
     }
 
 
@@ -54,30 +64,30 @@ public class Customer extends Person{
     public void createClass(String []bankAccountData, int[] dataPositions){
 
         Customer tempCustomer = new Customer();
-        tempCustomer.setCreditMax(Double.parseDouble(bankAccountData[dataPositions[9]]));
+        tempCustomer.setCreditMax(Double.parseDouble(bankAccountData[dataPositions[10]]));
         tempCustomer.setCheck(CheckingAcc);
         tempCustomer.setSave(SavingAcc);
         tempCustomer.setCred(CreditAcc);
 
 
 
-        CheckingAcc.set_Account_Number(Long.parseLong(bankAccountData[dataPositions[4]]));
-        CheckingAcc.set_Starting_Balance(Double.parseDouble(bankAccountData[dataPositions[7]]));
-        CheckingAcc.set_First_Name(bankAccountData[dataPositions[14]]);
+        CheckingAcc.set_Account_Number(Long.parseLong(bankAccountData[dataPositions[5]]));
+        CheckingAcc.set_Starting_Balance(Double.parseDouble(bankAccountData[dataPositions[8]]));
+        CheckingAcc.set_First_Name(bankAccountData[dataPositions[12]]);
         CheckingAcc.set_Last_Name(bankAccountData[dataPositions[2]]);
-        CheckingAcc.getBankStatement().setStartingBalance(Double.parseDouble(bankAccountData[dataPositions[7]]));
+        CheckingAcc.getBankStatement().setStartingBalance(Double.parseDouble(bankAccountData[dataPositions[8]]));
 
         SavingAcc.set_Account_Number(Long.parseLong(bankAccountData[dataPositions[0]]));
-        SavingAcc.set_Starting_Balance(Double.parseDouble(bankAccountData[dataPositions[8]]));
-        SavingAcc.set_First_Name(bankAccountData[dataPositions[14]]);
+        SavingAcc.set_Starting_Balance(Double.parseDouble(bankAccountData[dataPositions[9]]));
+        SavingAcc.set_First_Name(bankAccountData[dataPositions[12]]);
         SavingAcc.set_Last_Name(bankAccountData[dataPositions[2]]);
-        SavingAcc.getBankStatement().setStartingBalance(Double.parseDouble(bankAccountData[dataPositions[8]]));
+        SavingAcc.getBankStatement().setStartingBalance(Double.parseDouble(bankAccountData[dataPositions[9]]));
 
-        CreditAcc.set_Account_Number(Long.parseLong(bankAccountData[dataPositions[5]]));
-        CreditAcc.set_Starting_Balance(Double.parseDouble(bankAccountData[dataPositions[10]]));
-        CreditAcc.set_First_Name(bankAccountData[dataPositions[14]]);
+        CreditAcc.set_Account_Number(Long.parseLong(bankAccountData[dataPositions[6]]));
+        CreditAcc.set_Starting_Balance(Double.parseDouble(bankAccountData[dataPositions[11]]));
+        CreditAcc.set_First_Name(bankAccountData[dataPositions[12]]);
         CreditAcc.set_Last_Name(bankAccountData[dataPositions[2]]);
-        CreditAcc.getBankStatement().setStartingBalance(Double.parseDouble(bankAccountData[dataPositions[10]]));
+        CreditAcc.getBankStatement().setStartingBalance(Double.parseDouble(bankAccountData[dataPositions[11]]));
 
 
 
@@ -119,6 +129,10 @@ public class Customer extends Person{
     public void setCreditMax(double creditMaxIn){
         this.creditMax = creditMaxIn;
     }
+
+    public void setPassword(String passwordIn){this.password = passwordIn;}
+
+    public void setEmail(String EmailIn){this.Email = EmailIn;}
 
 
 
@@ -168,6 +182,8 @@ public class Customer extends Person{
      * @return this person's credit acount
      */
     public Credit getCred(){return this.CreditAcc;}
+    public String getPassword(){return this.password;}
+    public String getEmail(){return this.Email;}
 
 
 

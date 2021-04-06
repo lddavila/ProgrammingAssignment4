@@ -1,7 +1,7 @@
 /** extension of the Account Class, with additional attributes
  *
  */
-public class Checking extends Account{
+public class Checking extends Account implements Printable{
 
     /**default constructor
      */
@@ -20,6 +20,12 @@ public class Checking extends Account{
 
         //converts string into expected double
         this.set_Starting_Balance(Double.parseDouble(bankAccountData[12]));
+    }
+    public void print(){
+        System.out.println(get_Account_Number()+" "+get_Starting_Balance());
+    }
+    public String send(){
+        return(get_Account_Number()+" "+get_Starting_Balance());
     }
 
 

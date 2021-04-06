@@ -1,7 +1,7 @@
 /** extension of the Account Class, with additional attributes
  *
  */
-public class Savings extends Account{
+public class Savings extends Account implements Printable{
     /**default constructor
      */
     public Savings(){
@@ -21,6 +21,15 @@ public class Savings extends Account{
         //converts string into expected double
         this.set_Starting_Balance(Double.parseDouble(bankAccountData[13]));
     }
+    @Override
+    public void print(){
+        System.out.println(get_Account_Number()+" "+get_Starting_Balance());
+    }
+    @Override
+    public String send(){
+        return(get_Account_Number()+" "+get_Starting_Balance());
+    }
+
 
 
 }

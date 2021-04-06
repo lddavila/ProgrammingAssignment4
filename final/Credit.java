@@ -1,7 +1,7 @@
 /** extension of the Account Class, with additional attributes
  *
  */
-public class Credit extends Account{
+public class Credit extends Account implements Printable{
     private BankStatement bankStatement;
     /**default constructor
      */
@@ -64,5 +64,12 @@ public class Credit extends Account{
         writeUserActions.logUserAction("User: " + this.get_First_Name() + this.get_Last_Name() + "tried to withdrawal from their credit account. ");
         return -1;
 
+    }
+
+    public void print(){
+        System.out.println(get_Account_Number()+" "+get_Starting_Balance()+" ");
+    }
+    public String send(){
+        return(get_Account_Number()+" "+get_Starting_Balance());
     }
 }
