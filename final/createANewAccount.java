@@ -21,18 +21,26 @@ public class createANewAccount {
                 continue;
             tempCustomer.setFirstName(userInfo);
             //gets the user's last name
-            System.out.println("Thank you. Please enter your Last Name. (Enter -1 at any point to start over)");
+
+            System.out.println("Thank you. Please enter your password. (Enter -1 at any point to start over)");
             userInfo = userInput.nextLine();
             if (userInfo.equals("-1"))
                 continue;
             //gets the user's DOB
-            tempCustomer.setLastName(userInfo);
+            tempCustomer.setPassword(userInfo);
+
             System.out.println("Thank you. Please enter your Date of Birth in MM/DD/YYYY format. (Enter -1 at any point to start over)");
             userInfo = userInput.nextLine();
             if (userInfo.equals("-1"))
                 continue;
-            //gets the user's address
             tempCustomer.setDateOfBirth(userInfo);
+
+            System.out.println("Thank you. Please enter your Last Name. (Enter -1 at any point to start over)");
+            userInfo = userInput.nextLine();
+            if (userInfo.equals("-1"))
+                continue;
+            tempCustomer.setLastName(userInfo);
+
             System.out.println("Thank you. Please enter your Address in Street, City, State Zip format. (Enter -1 at any point to start over)");
             userInfo = userInput.nextLine();
             if (userInfo.equals("-1"))
@@ -77,7 +85,9 @@ public class createANewAccount {
                     tempChecking.set_First_Name(tempCustomer.getFirstName());
                     tempChecking.set_Last_Name(tempCustomer.getLastName());
                     tempCustomer.setCheck(tempChecking);
+                    tempCustomer.setCred(null);
                     people.add_Person(tempCustomer);
+
                     break;
                 case "2":
                     tempCredit.set_Account_Number(people.get_table()[(int)previousHighestIdPreserved-1][0].getCheck().get_Account_Number()+1);
@@ -85,6 +95,7 @@ public class createANewAccount {
                     tempCredit.set_First_Name(tempCustomer.getFirstName());
                     tempCredit.set_Last_Name(tempCustomer.getLastName());
                     tempCustomer.setCred(tempCredit);
+                    tempCustomer.setCheck(null);
                     people.add_Person(tempCustomer);
                     break;
                 case "3":
@@ -103,6 +114,8 @@ public class createANewAccount {
                 case "4":
                     System.out.println("Your account was created successfully. You are now being securely logged out, you now access your account from the main menu.");
                     people.add_Person(tempCustomer);
+                    tempCustomer.setCred(null);
+                    tempCustomer.setCheck(null);
                     break;
                 default:
                     System.out.println("Sorry Something went wrong, we need to start over.");
