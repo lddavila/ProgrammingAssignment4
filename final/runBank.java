@@ -1,6 +1,21 @@
 
 
 
+import java.util.Scanner;
+
+/**
+ * @author Luis David Davila
+ * @author LDDAVILA@miners.utep.edu
+ * This class runs the whole file and contains the user interface for the normal users
+ * also calls the user interface for the bank manager
+ */
+public class runBank {
+
+    /**
+     * The main method will call readFile to create a database of People and a database of Accounts
+     * It will store those databases to be used later
+     * Using a while loop which will only terminate in the case of user exit, this method will ask the user for an account number
+     * or ask for indication that the user is a bank manager
      * if they are a bank manager then it will call backEndForManager.java which will have a special menu and implementation
      * If they have a checking/saving account then they will get full functionality and the regular menu and the function will call backEnd.userAccountActions()
      * If they have a credit account then they will get a special menu and backEnd.creditAccountActions()
@@ -60,6 +75,7 @@
                     System.out.print("Hello " + user.getFirstName() + " " + user.getLastname() + ",");
                     System.out.println("Please enter your password or -1 to exit back to main menu.");
                     userName = userInput.nextLine();
+                    //deals with invalid passwords
                     if (!userName.equals(user.getPassword())) {
                         if(userName.equals("-1")){
                             break;
@@ -68,9 +84,10 @@
                         writeUserActions.logUserAction(user.getFirstName() + " " + user.getLastname() +" entered incorrect password.");
                         continue;
                     }
+                    else break;
                 }
                 //will let the user get back to the main menu instead of letting them continue
-                if(userName.equals("-1")) break;
+                if(userName.equals("-1")) continue;
                 while (actionIn == 0) {
                     //updated this so print menu is done in the backend file which is called below
                     actionIn = backEnd.printInitialMenu(user, people);
