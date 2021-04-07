@@ -21,11 +21,17 @@ public class Checking extends Account implements Printable{
         //converts string into expected double
         this.set_Starting_Balance(Double.parseDouble(bankAccountData[12]));
     }
+    @Override
     public void print(){
         System.out.println(get_Account_Number()+" "+get_Starting_Balance());
     }
+    @Override
     public String send(){
         return(get_Account_Number()+" "+get_Starting_Balance());
+    }
+    @Override
+    public double sendBalance(){
+        return(get_Starting_Balance());
     }
 
 

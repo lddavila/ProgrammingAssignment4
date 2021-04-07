@@ -21,6 +21,7 @@ public class Credit extends Account implements Printable{
         //converts string into expected boolean
 
         //converts string into expected double
+
         this.set_Starting_Balance(Double.parseDouble(bankAccountData[14]));
 
     }
@@ -65,11 +66,16 @@ public class Credit extends Account implements Printable{
         return -1;
 
     }
-
+    @Override
     public void print(){
         System.out.println(get_Account_Number()+" "+get_Starting_Balance()+" ");
     }
+    @Override
     public String send(){
         return(get_Account_Number()+" "+get_Starting_Balance());
+    }
+    @Override
+    public double sendBalance(){
+        return(get_Starting_Balance());
     }
 }

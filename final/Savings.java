@@ -29,6 +29,10 @@ public class Savings extends Account implements Printable{
     public String send(){
         return(get_Account_Number()+" "+get_Starting_Balance());
     }
+    @Override
+    public double sendBalance(){
+        return(get_Starting_Balance());
+    }
 
 
 
