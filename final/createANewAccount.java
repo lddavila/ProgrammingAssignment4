@@ -1,4 +1,3 @@
-
 import java.util.Scanner;
 /**This class enables new accounts to be made from the console
  * @author Luis David Davila
@@ -14,45 +13,57 @@ public class createANewAccount {
         while (!userInfo.equals(-1)){
             //gets the user's first name
 
-            System.out.println("Thank you for choosing to open an account with us. (Enter -1 at any point to start over)");
+            System.out.println("Thank you for choosing to open an account with us. (Enter -1 at any point to start over. Enter -2 to exit to main menu");
             System.out.println("Please enter your first name.");
             userInfo = userInput.nextLine();
             if (userInfo.equals("-1"))
                 continue;
+            else if(userInfo.equals("-2"))
+                break;
             tempCustomer.setFirstName(userInfo);
             //gets the user's last name
 
-            System.out.println("Thank you. Please enter your password. (Enter -1 at any point to start over)");
+            System.out.println("Thank you. Please enter your password. (Enter -1 at any point to start over. Enter -2 to exit to main menu)");
             userInfo = userInput.nextLine();
             if (userInfo.equals("-1"))
                 continue;
+            else if(userInfo.equals("-2"))
+                break;
             //gets the user's DOB
             tempCustomer.setPassword(userInfo);
 
-            System.out.println("Thank you. Please enter your Date of Birth in MM/DD/YYYY format. (Enter -1 at any point to start over)");
+            System.out.println("Thank you. Please enter your Date of Birth in MM/DD/YYYY format. (Enter -1 at any point to start over. Enter -2 to exit to main menu)");
             userInfo = userInput.nextLine();
             if (userInfo.equals("-1"))
                 continue;
+            else if(userInfo.equals("-2"))
+                break;
             tempCustomer.setDateOfBirth(userInfo);
 
-            System.out.println("Thank you. Please enter your Last Name. (Enter -1 at any point to start over)");
+            System.out.println("Thank you. Please enter your Last Name. (Enter -1 at any point to start over. Enter -2 to exit to main menu)");
             userInfo = userInput.nextLine();
             if (userInfo.equals("-1"))
                 continue;
+            else if(userInfo.equals("-2"))
+                break;
             tempCustomer.setLastName(userInfo);
 
-            System.out.println("Thank you. Please enter your Address in Street, City, State Zip format. (Enter -1 at any point to start over)");
+            System.out.println("Thank you. Please enter your Address in Street, City, State Zip format. (Enter -1 at any point to start over. Enter -2 to exit to main menu)");
             userInfo = userInput.nextLine();
             if (userInfo.equals("-1"))
                 continue;
+            else if(userInfo.equals("-2"))
+                break;
             tempCustomer.setAddress(userInfo);
 
 
             //gets the user's phone number
-            System.out.println("Thank you. Please enter your phone number. (Enter -1 at any point to start over)");
+            System.out.println("Thank you. Please enter your phone number. (Enter -1 at any point to start over. Enter -2 to exit to main menu)");
             userInfo = userInput.nextLine();
             if (userInfo.equals("-1"))
                 continue;
+            else if(userInfo.equals("-2"))
+                break;
             tempCustomer.setPhoneNumber(userInfo);
             long previousHighestIdPreserved = people.getHighestId();
             tempCustomer.setIDNum(((String.valueOf(people.getHighestId() +1))));
